@@ -8,7 +8,7 @@ class SectionsContainer extends Component {
     sectionScrolledPosition: 0,
     windowHeight: 0
   };
-  
+
   resetScrollTimer;
   childrenLength;
   getChildContext() {
@@ -35,9 +35,9 @@ class SectionsContainer extends Component {
 
     if (!this.props.scrollBar) {
       this.addCSS3Scroll();
-      this.handleAnchor(); 
+      this.handleAnchor();
 
-      window.addEventListener('hashchange', this.handleAnchor, false); 
+      window.addEventListener('hashchange', this.handleAnchor, false);
 
       if (this.props.arrowNavigation) {
         window.addEventListener('keydown', this.handleArrowKeys);
@@ -65,12 +65,12 @@ class SectionsContainer extends Component {
     if (this.props.arrowNavigation) {
       window.removeEventListener('keydown', this.handleArrowKeys);
     }
-  }
+  };
 
   addCSS3Scroll = () => {
     this.addOverflowToBody();
     this.addMouseWheelEventHandlers();
-  }
+  };
 
   addActiveClass = () => {
     this.removeActiveClass();
@@ -84,7 +84,7 @@ class SectionsContainer extends Component {
         (activeLinks[i].className.length > 0 ? ' ' : '') +
         `${this.props.activeClass}`;
     }
-  }
+  };
 
   removeActiveClass = () => {
     let activeLinks = document.querySelectorAll(
@@ -97,7 +97,7 @@ class SectionsContainer extends Component {
         ''
       );
     }
-  }
+  };
 
   addChildrenWithAnchorId = () => {
     let index = 0;
@@ -115,28 +115,28 @@ class SectionsContainer extends Component {
         return child;
       }
     });
-  }
+  };
 
   addOverflowToBody = () => {
     document.querySelector('body').style.overflow = 'hidden';
-  }
+  };
 
   removeOverflowFromBody = () => {
     document.querySelector('body').style.overflow = 'initial';
-  }
+  };
 
   addMouseWheelEventHandlers = () => {
     window.addEventListener('mousewheel', this.handleMouseWheel, false);
     window.addEventListener('DOMMouseScroll', this.handleMouseWheel, false);
-  }
+  };
 
   removeMouseWheelEventHandlers = () => {
     window.removeEventListener('mousewheel', this.handleMouseWheel);
     window.removeEventListener('DOMMouseScroll', this.handleMouseWheel);
-  }
+  };
 
   handleMouseWheel = event => {
-    const e = window.event || event; 
+    const e = window.event || event;
     const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
     const activeSection = this.state.activeSection - delta;
 
@@ -151,7 +151,7 @@ class SectionsContainer extends Component {
     this.setAnchor(activeSection);
     this.handleSectionTransition(activeSection);
     this.addActiveClass();
-  }
+  };
 
   handleResize = () => {
     const position = 0 - this.state.activeSection * window.innerHeight;
@@ -163,9 +163,9 @@ class SectionsContainer extends Component {
     });
 
     this.resetScroll();
-  }
+  };
 
-  handleSectionTransition = (index) => {
+  handleSectionTransition = index => {
     const position = 0 - index * this.state.windowHeight;
 
     if (
@@ -184,19 +184,16 @@ class SectionsContainer extends Component {
 
     this.resetScroll();
     this.handleScrollCallback();
-  }
+  };
 
-  handleArrowKeys = (e) => {
-    
-    
-    
+  handleArrowKeys = e => {
     const event = window.event ? window.event : e;
     const activeSection =
       event.keyCode === 38 || event.keyCode === 37
         ? this.state.activeSection - 1
         : event.keyCode === 40 || event.keyCode === 39
-          ? this.state.activeSection + 1
-          : -1;
+        ? this.state.activeSection + 1
+        : -1;
 
     if (
       this.state.scrollingStarted ||
@@ -209,7 +206,7 @@ class SectionsContainer extends Component {
     this.setAnchor(activeSection);
     this.handleSectionTransition(activeSection);
     this.addActiveClass();
-  }
+  };
 
   handleTouchNav = () => {
     let that = this;
@@ -221,9 +218,9 @@ class SectionsContainer extends Component {
       dist,
       distX,
       distY,
-      threshold = 50, 
-      restraint = 100, 
-      allowedTime = 1000, 
+      threshold = 50,
+      restraint = 100,
+      allowedTime = 1000,
       elapsedTime,
       startTime,
       handleswipe = function(swipedir) {
@@ -238,8 +235,7 @@ class SectionsContainer extends Component {
         dist = 0;
         startX = touchobj.pageX;
         startY = touchobj.pageY;
-        startTime = new Date().getTime(); 
-        
+        startTime = new Date().getTime();
       },
       false
     );
@@ -247,7 +243,7 @@ class SectionsContainer extends Component {
     touchsurface.addEventListener(
       'touchmove',
       function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
       },
       false
     );
@@ -256,20 +252,18 @@ class SectionsContainer extends Component {
       'touchend',
       function(e) {
         let touchobj = e.changedTouches[0];
-        distX = touchobj.pageX - startX; 
-        distY = touchobj.pageY - startY; 
-        elapsedTime = new Date().getTime() - startTime; 
+        distX = touchobj.pageX - startX;
+        distY = touchobj.pageY - startY;
+        elapsedTime = new Date().getTime() - startTime;
         if (elapsedTime <= allowedTime) {
-          
           if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
-            
-            swipedir = distY < 0 ? 'up' : 'down'; 
+            swipedir = distY < 0 ? 'up' : 'down';
             let direction =
               swipedir === 'down'
                 ? that.state.activeSection - 1
                 : swipedir === 'up'
-                  ? that.state.activeSection + 1
-                  : -1;
+                ? that.state.activeSection + 1
+                : -1;
             let hash = that.props.anchors[direction];
 
             if (!that.props.anchors.length || hash) {
@@ -280,11 +274,10 @@ class SectionsContainer extends Component {
           }
         }
         handleswipe(swipedir);
-        
       },
       false
     );
-  }
+  };
 
   handleAnchor = () => {
     const hash = window.location.hash.substring(1);
@@ -294,21 +287,21 @@ class SectionsContainer extends Component {
       this.handleSectionTransition(activeSection);
       this.addActiveClass();
     }
-  }
+  };
 
-  setAnchor = (index) => {
+  setAnchor = index => {
     const hash = this.props.anchors[index];
 
     if (!this.props.anchors.length || hash) {
       window.location.hash = '#' + hash;
     }
-  }
+  };
 
   handleScrollCallback = () => {
     if (this.props.scrollCallback) {
       setTimeout(() => this.props.scrollCallback(this.state), 0);
     }
-  }
+  };
 
   resetScroll = () => {
     this.clearResetScrollTimer();
@@ -318,19 +311,19 @@ class SectionsContainer extends Component {
         scrollingStarted: false
       });
     }, this.props.delay + 300);
-  }
+  };
 
   clearResetScrollTimer = () => {
     if (this.resetScrollTimer) {
       clearTimeout(this.resetScrollTimer);
     }
-  }
+  };
 
   renderNavigation = () => {
     let navigationStyle = {
       position: 'fixed',
       zIndex: '10',
-      right: '20px',
+      left: '1rem',
       top: '50%',
       transform: 'translate(-50%, -50%)'
     };
@@ -339,9 +332,9 @@ class SectionsContainer extends Component {
       const anchorStyle = {
         display: 'block',
         margin: '10px',
-        borderRadius: '100%',
-        backgroundColor: '#556270',
-        padding: '5px',
+        backgroundColor:
+          this.state.activeSection === index ? '#fff' : '#556270',
+        padding: '1rem 0.1rem',
         transition: 'all 0.2s',
         transform: this.state.activeSection === index ? 'scale(1.3)' : 'none'
       };
@@ -359,20 +352,19 @@ class SectionsContainer extends Component {
     return (
       <div
         className={this.props.navigationClass || 'Navigation'}
-        style={this.props.navigationClass ? null : navigationStyle}>
+        style={this.props.navigationClass ? null : navigationStyle}
+      >
         {anchors}
       </div>
     );
-  }
+  };
 
   render() {
     let containerStyle = {
       height: '100%',
       width: '100%',
       position: 'relative',
-      transform: `translate3d(0px, ${
-        this.state.sectionScrolledPosition
-      }px, 0px)`,
+      transform: `translate3d(0px, ${this.state.sectionScrolledPosition}px, 0px)`,
       transition: `all ${this.props.delay}ms ease`
     };
     return (

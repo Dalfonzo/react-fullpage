@@ -130,7 +130,6 @@ var SectionsContainer = function (_Component) {
       _this.resetScroll();
       _this.handleScrollCallback();
     }, _this.handleArrowKeys = function (e) {
-
       var event = window.event ? window.event : e;
       var activeSection = event.keyCode === 38 || event.keyCode === 37 ? _this.state.activeSection - 1 : event.keyCode === 40 || event.keyCode === 39 ? _this.state.activeSection + 1 : -1;
 
@@ -179,9 +178,7 @@ var SectionsContainer = function (_Component) {
         distY = touchobj.pageY - startY;
         elapsedTime = new Date().getTime() - startTime;
         if (elapsedTime <= allowedTime) {
-
           if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
-
             swipedir = distY < 0 ? 'up' : 'down';
             var direction = swipedir === 'down' ? that.state.activeSection - 1 : swipedir === 'up' ? that.state.activeSection + 1 : -1;
             var hash = that.props.anchors[direction];
@@ -231,7 +228,7 @@ var SectionsContainer = function (_Component) {
       var navigationStyle = {
         position: 'fixed',
         zIndex: '10',
-        right: '20px',
+        left: '1rem',
         top: '50%',
         transform: 'translate(-50%, -50%)'
       };
@@ -240,9 +237,8 @@ var SectionsContainer = function (_Component) {
         var anchorStyle = {
           display: 'block',
           margin: '10px',
-          borderRadius: '100%',
-          backgroundColor: '#556270',
-          padding: '5px',
+          backgroundColor: _this.state.activeSection === index ? '#fff' : '#556270',
+          padding: '1rem 0.1rem',
           transition: 'all 0.2s',
           transform: _this.state.activeSection === index ? 'scale(1.3)' : 'none'
         };
@@ -259,7 +255,8 @@ var SectionsContainer = function (_Component) {
         'div',
         {
           className: _this.props.navigationClass || 'Navigation',
-          style: _this.props.navigationClass ? null : navigationStyle },
+          style: _this.props.navigationClass ? null : navigationStyle
+        },
         anchors
       );
     }, _temp), _possibleConstructorReturn(_this, _ret);
